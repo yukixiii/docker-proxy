@@ -1,0 +1,31 @@
+# vim: et sw=2 sts=2 ts=2
+version: '3'
+services:
+  proxy:
+    image: jwilder/nginx-proxy:alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./proxy/certs:/etc/nginx/certs
+      - ./proxy/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf
+    networks:
+      - default
+      # - django-sample_default
+
+  mailcatcher:
+    build:
+      context: ./mailcatcher
+    image: mailcatcher
+    ports:
+      - 1080:1080
+      - 1025:1025
+
+networks:
+  default:
+    external:
+      name: develop_network
+  # django-sample_default:
+  #   external: true
