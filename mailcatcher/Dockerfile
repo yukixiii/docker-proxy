@@ -1,4 +1,4 @@
-FROM ruby:2.4-alpine
+FROM ruby:3.0-alpine
 
 RUN apk --no-cache --update add \
                             libstdc++ \
@@ -12,6 +12,7 @@ RUN apk --no-cache --update add \
     rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
 
 # smtp (25) and ip (80) ports
-EXPOSE 1025 1080
+# EXPOSE 1025 1080
+EXPOSE 25 80
 
-CMD ["mailcatcher", "--smtp-ip=0.0.0.0", "--smtp-port=1025", "--http-ip=0.0.0.0", "--http-port=1080", "-f"]
+CMD ["mailcatcher", "--smtp-ip=0.0.0.0", "--smtp-port=25", "--http-ip=0.0.0.0", "--http-port=80", "-f"]

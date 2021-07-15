@@ -1,8 +1,9 @@
 # vim: et sw=2 sts=2 ts=2
-version: '3'
+version: "3.9"
 services:
   proxy:
-    image: jwilder/nginx-proxy:alpine
+    image: nginxproxy/nginx-proxy:alpine
+    restart: always
     ports:
       - 80:80
       - 443:443
@@ -11,17 +12,18 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./proxy/certs:/etc/nginx/certs
       - ./proxy/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf
-    networks:
-      - default
-      # - django-sample_default
 
   mailcatcher:
     build:
       context: ./mailcatcher
     image: mailcatcher
-    ports:
-      - 1080:1080
-      - 1025:1025
+    restart: always
+    environment:
+      VIRTUAL_HOST: local.mailcatcher.jp
+      # VIRTUAL_PORT: 1080
+    # ports:
+    #   - 1080:1080
+    #   - 1025:1025
 
 networks:
   default:
